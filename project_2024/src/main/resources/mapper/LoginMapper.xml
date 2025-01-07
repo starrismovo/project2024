@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_2024.mapper.LoginMapper">
+    <insert id="addUser">
+        insert into tbl_c_loginuser ( userid, username, password, `name`, sex, age) values (#{userid},#{username},#{password},#{name},#{sex},#{age})
+    </insert>
+
+    <select id="getByUserNameAndPassword" resultType="com.example.project_2024.pojo.LoginUser">
+        select * from tbl_c_loginuser where username=#{username} and password=#{password}
+    </select>
+    <select id="getByUsername" resultType="com.example.project_2024.pojo.LoginUser">
+        select * from tbl_c_loginuser where username =#{username}
+    </select>
+
+</mapper>

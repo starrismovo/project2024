@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_2024.mapper.FactorMapper">
+    <select id="getMarketSale" resultType="com.example.project_2024.domain.FactorSale">
+        SELECT regDate, COUNT(*) total_sales
+        FROM bigcar_data
+        GROUP BY regDate
+        ORDER BY regDate;
+    </select>
+
+    <select id="getMarketBody" resultType="com.example.project_2024.domain.FactorBody">
+        SELECT
+        CASE
+        WHEN price &lt; 5000 THEN '小于5K'
+        WHEN price >= 5000 AND price &lt; 10000 THEN '5K-10K'
+        WHEN price >= 10000 AND price &lt; 15000 THEN '10K-15K'
+        ELSE '15K+'  -- 为价格大于等于 15000 的情况添加默认范围
+        END AS price_range,
+        COALESCE(bodyType, '未知类型') AS bodyType,  -- 如果 bodyType 为 NULL，替换为 '未知类型'
+        COUNT(*) AS count_range
+        FROM (
+        SELECT regDate, price, bodyType
+        FROM bigcar_data
+        WHERE bodyType NOT IN (5, 6, 7)
+        ) AS filtered_data
+        GROUP BY
+        price_range,
+        bodyType
+        ORDER BY
+        price_range,
+        bodyType;
+
+    </select>
+    <select id="getMarketMileage" resultType="com.example.project_2024.domain.FactorMileage">
+        SELECT kilometer,AVG(price) avg_price
+        FROM bigcar_data
+        GROUP BY kilometer
+        ORDER BY kilometer DESC;
+    </select>
+
+    <select id="getMarketPlatbox" resultType="com.example.project_2024.domain.FactorPlatbox">
+        SELECT b.brands,a.min,a.`25%` Q1,a.`50%` median,a.`75%` Q3,a.max
+        FROM price_stats a
+                 LEFT JOIN dws_brand_brands b ON a.brand = b.brand
+        WHERE a.brand IN (0, 4, 14, 10, 1, 6, 9, 5, 13, 11);
+    </select>
+
+</mapper>

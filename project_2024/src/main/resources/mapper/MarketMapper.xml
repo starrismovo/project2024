@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.project_2024.mapper.MarketMapper">
+
+    <select id="getMarketBrand" resultType="com.example.project_2024.domain.MarketBrand">
+        SELECT * FROM dws_brand_sale ORDER BY quantity DESC LIMIT 15;
+    </select>
+
+
+    <select id="getMarketLeft2" resultType="com.example.project_2024.domain.MarketLeft2">
+        WITH b AS (
+            SELECT
+                regDate,
+                brand,
+                COUNT(*) AS a
+            FROM bigcar_data
+            GROUP BY brand, regDate
+            ORDER BY brand, regDate
+        )
+        SELECT
+            b.regDate,
+            SUM(b.a) OVER (PARTITION BY b.brand ORDER BY b.regDate ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_count,
+                d.brands  -- 假设你需要从 dws_brand_brands 表中选择品牌名称
+        FROM b
+                 LEFT JOIN dws_brand_brands d ON b.brand = d.brand  -- 使用一致的别名
+        WHERE b.brand IN (0, 4, 14, 10, 1, 6, 9, 5, 13, 11)
+        ORDER BY b.brand, b.regDate;
+
+    </select>
+
+    <select id="getMarketFuel" resultType="com.example.project_2024.domain.MarketFuel">
+        SELECT fuel_type_name,quantity
+        FROM dim_fuel_type a
+        LEFT JOIN fuel_type_category b on a.fuel_type = b.fuel_type;
+    </select>
+
+    <select id="getMarketTrade" resultType="com.example.project_2024.domain.MarketTrade">
+        SELECT
+            a.regDate,
+            a.regDate_count,
+            a.total_price,
+            CASE
+                WHEN a.regDate_count != 0 THEN a.distinct_name_count / a.regDate_count
+                ELSE NULL
+                END AS accuracy_rate,
+            0.8 AS standard_value
+        FROM
+            (
+                SELECT
+                    regDate,
+                    COUNT(*) AS regDate_count,
+                    SUM(price) AS total_price,
+                    COUNT(DISTINCT name) AS distinct_name_count
+                FROM
+                    bigcar_data
+                GROUP BY
+                    regDate
+            ) AS a;
+    </select>
+
+    <select id="getMarketPrice" resultType="com.example.project_2024.domain.MarketPrice">
+        SELECT
+            CASE
+                WHEN price &lt; 5000 THEN '小于5K'
+                WHEN price >= 5000 AND price &lt; 10000 THEN '05K-10K'
+                WHEN price >= 10000 AND price &lt; 15000 THEN '10K-15K'
+                WHEN price >= 15000 AND price &lt; 20000 THEN '15K-20K'
+                WHEN price >= 20000 AND price &lt; 25000 THEN '20K-25K'
+                WHEN price >= 25000 THEN '25K+'
+            END AS price_range,
+            COUNT(*) AS count_range
+        FROM bigcar_data
+        GROUP BY price_range
+        ORDER BY price_range;
+    </select>
+
+    <select id="getMarketOrders" resultType="com.example.project_2024.domain.MarketOrders">
+        SELECT
+        regDate,
+        CASE
+        WHEN price &lt; 5000 THEN '小于5K'
+        WHEN price >= 5000 AND price &lt; 10000 THEN '5K-10K'
+        WHEN price >= 10000 AND price &lt;15000 THEN '10K-15K'
+        WHEN price >= 15000 AND price &lt; 20000 THEN '15K-20K'
+        WHEN price >= 20000 THEN '20K+'
+        END AS price_range,
+        COUNT(*) AS count_range
+        FROM bigcar_data
+        GROUP BY regDate, price_range
+        ORDER BY regDate ASC, price_range;
+    </select>
+
+</mapper>
