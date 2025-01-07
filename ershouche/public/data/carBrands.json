@@ -1,0 +1,27 @@
+[
+  {
+    "rank": 1,
+    "brand": "大众",
+    "sales": 31480
+  },
+  {
+    "rank": 2,
+    "brand": "本田",
+    "sales": 26737
+  },
+  {
+    "rank": 3,
+    "brand": "丰田",
+    "sales": 24089
+  },
+  {
+    "rank": 4,
+    "brand": "别克",
+    "sales": 22249
+  },
+  {
+    "rank": 5,
+    "brand": "宝马",
+    "sales": 21794
+  }
+]

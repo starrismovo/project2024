@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" media="all" href="static/css/daterangepicker.css" />
+    <link rel="stylesheet" href="static/css/css.css">
+    <link rel="stylesheet" href="static/css/price.css">
+    <link rel="stylesheet" href="static/css/daterangepicker.css">
+    <title>二手车品牌市场</title>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="header_l">
+                <ul>
+                    <li class="">
+                        <a href='index.html'>
+                            <img src="static/picture/header-3.png" alt="">
+                            <span>大屏首页</span>
+                        </a>
+                    </li>
+                    <li class="sel_li">
+                        <a href='price.html'>
+                            <span>品牌洞察</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="https://m.guazi.com/">
+                            <span>售卖渠道</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="header_m">
+                <h1>品牌洞察分析</h1>
+            </div>
+            <div class="header_r">
+                <ul>
+                    <li class="">
+                        <a href="https://www.sohu.com/a/752747092_121489825">
+                            <span>行业报告</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="https://gitee.com/iGaoWei/big-data-view">
+                            <span>业务系统</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user.html">
+                            <img src="static/picture/header-1.png" alt="">
+                            <span>退出</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main">
+            <div class="main_l">
+                <div class="item mainl1">
+                    <div class="title">
+                        <h2>车身分布</h2>
+                    </div>
+                    <div class="con">
+                        <div class="con_f line0" id="chart1" style="height: 100%"></div>  
+                    </div> 
+                    
+                  
+                </div>
+                <div class="item mainl2">
+                    <div class="title">
+                        <h2>市场供需</h2>
+                        
+                    </div>
+                    <div class="con">
+                        <div class="con_f line1" id="barchart" style="height: 100%;"></div>
+                    </div>
+                </div>
+                <div class="item mainl3">
+                    <div class="title">
+                        <h2>价值折旧趋势</h2>
+                        
+                    </div>
+                    <div class="con">
+                        <div class="con_f line2" id="scatterchart" style="height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="main_m">
+                <div class="main_m_t">
+              <div class="item1">
+                <p style="font-size: 15px;" >轿车：<span data-ride="numberGrow6" data-value="30.6" data-time="3" data-digit="2">3</span>%</p >
+                <p style="font-size: 15px;">微型车：<span data-ride="numberGrow6" data-value="23.5" data-time="3" data-digit="2">3</span>%</p >
+                <p>热门车型占比</p >
+              </div>
+              
+              <div class="item1">
+                <p style="font-size: 15px;">轿车：<span data-ride="numberGrow6" data-value="29.4" data-time="3" data-digit="2">321</span>%</p >
+                <p style="font-size: 15px;">微型车：<span data-ride="numberGrow6" data-value="11.0" data-time="3" data-digit="2">321</span>%</p >
+                <p>热门车型销售额占比</p >
+              </div>
+              
+               </div>
+                <div class="main_m_m">
+                    <h2>市场洞察矩阵</h2>
+                </div>
+                    <div class="main_m_b" id="scatterPlotContainer" ></div>
+             
+            </div> 
+            <div class="main_r">
+                <div class="item mainr1">
+                    <div class="title">
+                        <h2>品牌维度</h2>
+                    </div>
+                    <div class="con">
+                        <div class="con_f line3" id="chart3" style="height: 100%;"></div>
+                    </div>
+                </div>
+                <div class="item mainr2">
+                    <div class="title">
+                        <h2>品牌价格</h2>
+                        
+                    </div>
+                    <div class="con"> 
+                        <div class="con_f line4" style="height: 100%;"></div>
+                    </div>
+                </div>
+                <div class="item mainr3">
+                    <div class="title">
+                        <h2>热销品牌一览</h2>
+                    </div>
+                    <div class="scroll-container">
+                        <ul class="scroll-list"></ul>
+                        <ul class="scroll-list"></ul>
+                    </div>
+                </div>
+                
+                <script>
+function updateRanking() {
+    fetch('public/data/carBrands.json',{
+    // headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     }
+})
+        .then(response => response.json())
+        .then(data => {
+            data.sort((a, b) => b.sales - a.sales);
+            
+            const template = data.map(item => `
+                <li class="scroll-item">
+                    <span class="rank">${item.rank}</span>
+                    <span class="brand">${item.brand}</span>
+                    <span class="sales">${item.sales.toLocaleString()}</span>
+                </li>
+            `).join('');
+            
+            document.querySelectorAll('.scroll-list').forEach(list => {
+                list.innerHTML = template;
+            });
+        })
+        .catch(error => console.error('数据加载失败:', error));
+}
+
+// 添加滚动效果
+function initScroll() {
+    const container = document.querySelector('.scroll-container');
+    const lists = document.querySelectorAll('.scroll-list');
+    let scrollInterval;
+    // 复制列表实现无缝滚动
+    lists[1].innerHTML = lists[0].innerHTML;
+    function autoScroll() {
+        if (container.scrollTop >= container.querySelector('.scroll-list').scrollHeight) {
+            container.scrollTop = 0;
+        } else {
+            container.scrollTop += 1;
+        }
+    }
+    
+    scrollInterval = setInterval(autoScroll, 50);
+    
+    container.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+    container.addEventListener('mouseleave', () => {
+        scrollInterval = setInterval(autoScroll, 50);
+    });
+}
+
+// 初始化
+updateRanking();
+setInterval(updateRanking, 30000); // 每30秒更新一次
+window.addEventListener('load', initScroll);
+
+
+</script>
+                    
+                    <style>
+                    .scroll-container {
+                        height: 200px;
+                        overflow: hidden;
+                        position: relative;
+                    }
+                    
+                    .scroll-list {
+                        padding: 0;
+                        margin: 0;
+                        list-style: none;
+                    }
+                    
+                    .scroll-item {
+                        padding: 10px;
+                        border-bottom: 1px solid rgba(255,255,255,0.1);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .rank {
+                        color: #00FFE3;
+                        width: 30px;
+                    }
+                    
+                    .brand {
+                        flex: 1;
+                        padding: 0 10px;
+                        color: #fff;
+                    }
+                    
+                    .sales {
+                        color: #00FFE3;
+                        width: 80px;
+                        text-align: right;
+                    }
+                    </style>
+            
+        </div>
+    </div>
+
+
+
+    <script src="static/js/jquery-1.10.2.js"></script>
+    <script src="static/js/bootstrap-3.3.4.js"></script>
+    <script src="static/js/echarts.min.js"></script>
+    <script src="static/js/flexible.js"></script>
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/price.js"></script>
+    <script src="static/js/moment.js"></script>
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/daterangepicker.js"></script>
+    <script src="static/js/scrolllazyinit.js"></script>
+
+    <script src="static/js/loader.js"></script>
+    
+</body>
+
+
+</html>

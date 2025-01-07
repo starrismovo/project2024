@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background: url(bg_05.jpg) no-repeat; /* 替换成你的背景图片路径 */
+            background-size: cover; /* 使背景图像覆盖整个页面 */
+            background-position: center; /* 将背景图像居中显示 */
+            background-attachment: fixed; /* 固定背景图像位置 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: rgba(255, 255, 255, 0.8); /* 透明背景 */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+        .register-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .register-button:hover {
+            background-color: #218838;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>用户注册</h2>
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" placeholder="请输入用户名" required>
+            </div>
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码" required>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">确认密码</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="请确认密码" required>
+            </div>
+            <button type="submit" class="register-button">注册</button>
+        </form>
+        <div class="footer">
+            <p>已有账户？<a href="user.html">登录</a></p>
+        </div>
+    </div>
+
+    <script>
+        // 处理注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            // 获取用户输入的用户名、密码和确认密码
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('密码和确认密码不匹配');
+                return;
+            }
+
+            // 发送注册请求到后端
+            try {
+    const response = await fetch('http://192.168.43.63:8080/login/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+        }),
+    });
+
+    // 检查响应是否为有效的 JSON
+    const contentType = response.headers.get('Content-Type');
+    if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+
+        if (response.ok) {
+            // 注册成功
+            // alert('注册成功，请登录');
+            window.location.href = '/user.html';
+        } else {
+            // 注册失败
+            alert(`注册失败: ${data.message || '未知错误'}`);
+        }
+    } else {
+        // 响应不是 JSON 格式
+        alert('服务器返回的数据格式不正确');
+    }
+} catch (error) {
+    // 处理网络错误
+    console.error('请求失败：', error);
+    alert('请求失败，请稍后再试');
+}
+
+        });
+    </script>
+</body>
+</html>

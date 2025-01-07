@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="static/js/Bubble.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap-3.3.4.css">
+    <link rel="stylesheet" type="text/css" media="all" href="static/css/daterangepicker.css" />
+    <link rel="stylesheet" href="static/css/css.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="static/css/daterangepicker.css">
+    <title>二手车平台</title>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="header_l">
+                <ul>
+                    <li class="sel_li">
+                        <a href='index.html'>
+                            <img src="static/picture/header-3.png" alt="">
+                            <span>大屏首页</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href='price.html'>
+                            <span>品牌洞察</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="https://m.guazi.com/">
+                            <span>售卖渠道</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="header_m">
+                <h1>二手车市场分析</h1>
+            </div>
+            <div class="header_r">
+                <ul>
+
+                    <li class="">
+                        <a href="https://www.sohu.com/a/752747092_121489825">
+                            <span>行业报告</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="https://gitee.com/iGaoWei/big-data-view">
+                            <span>业务系统</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user.html">
+                            <img src="static/picture/header-1.png" alt="">
+                            <span>退出</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main">
+            <div class="main_l">
+                <div class="item mainl1">
+                    <div class="title">
+                        <h2>二手车市场份额</h2>
+                        <select id="yearSelect">
+                            <!-- 自动生成1997-2023的年份 -->
+                            <script>
+                                for (let year = 1997; year <= 2015; year++) {
+                                    document.write(`<option value="${year}">${year}年</option>`);
+                                }
+                            </script>
+                        </select>
+                        <!-- <button id="date1"></button> -->
+                    </div>
+                    <ul>
+                        <li>
+                            <span>二手车交易量</span>
+                            <p><span id="volume">1000</span> 辆</p>
+                        </li>
+                        <li>
+                            <span>成交金额</span>
+                            <p><span id="amount">1000000</span> 美元</p>
+                        </li>
+                        <li>
+                            <span>流通率</span>
+                            <p><span id="transactions">500</span> %</p>
+                        </li>
+                        <li>
+                            <span>标准流通率</span>
+                            <p><span id="age">5</span> %</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="item mainl2">
+                    <div class="title">
+                        <h2>品牌市场份额</h2>
+                        
+                    </div>
+                    <div class="con">
+                        
+                        <div class="con_f line1" style=" width: 100%;height: 230px;"></div>
+                    </div>
+                </div>
+                <div class="item mainl3">
+                    <div class="title">
+                        <h2>热门品牌</h2>
+                    </div>   
+                    <div class="con">             
+                     <div class="con_f line2" id="bubbleWordCloud" style="height: 200px; width: 100%;"></div> 
+                     </div>
+                </div>   
+    
+            </div>
+            <div class="main_m">
+                
+                <div class="main_m_t">
+                    <div class="item1" id="southData">
+                        <p><span data-ride="numberGrow6" data-value="3" data-time="3" data-digit="2"></span>万单 <span class="arrow"></span></p>
+                        <p><span data-ride="numberGrow6" data-value="3" data-time="3" data-digit="2"></span>万单 <span class="arrow"></span></p>
+                        <p>订单数</p>
+                    </div>
+                    <div class="item1" id="eastData">
+                        <p><span data-ride="numberGrow6" data-value="20" data-time="3" data-digit="2"></span>万元 <span class="arrow"></span></p>
+                        <p><span data-ride="numberGrow6" data-value="20" data-time="3" data-digit="2"></span>万元 <span class="arrow"></span></p>
+                        <p>总价格</p>
+                    </div>
+                    <div class="item1" id="northData">
+                        <p><span data-ride="numberGrow6" data-value="64.0" data-time="3" data-digit="2"></span>% <span class="arrow"></span></p>
+                        <p><span data-ride="numberGrow6" data-value="64.0" data-time="3" data-digit="2"></span>% <span class="arrow"></span></p>
+                        <p>订单量占比</p>
+                    </div>
+                    <div class="item1" id="centerData">
+                        <p><span data-ride="numberGrow6" data-value="321" data-time="3" data-digit="2"></span> <span class="arrow"></span></p>
+                        <p><span data-ride="numberGrow6" data-value="321" data-time="3" data-digit="2"></span>% <span class="arrow"></span></p>
+                        <p>增长率</p>
+                    </div>
+                </div>
+                
+                <div class="main_m_m">
+                    <h2>市场地域流动分析</h2>
+                </div>
+                <div class="main_m_b" id="mapChart"></div>
+            </div>
+            <div class="main_m_f">
+                <ul>
+                    <li class="active" data-value="华南地区数据：100" data-region="south">
+                        <a href="#">
+                            <img src="static/picture/mainm-4.png" alt=""> <img src="static/picture/mainm-4h.png" alt="">
+                        </a>
+                        <span>华南</span>
+                    </li>
+                    <li data-region="east">
+                        <a href="#">
+                            <img src="static/picture/mainm-5.png" alt=""> <img src="static/picture/mainm-5h.png" alt="">
+                        </a>
+                        <span>华东</span>
+                    </li>
+                    <li data-region="north">
+                        <a href="#">
+                            <img src="static/picture/mainm-6.png" alt=""> <img src="static/picture/mainm-6h.png" alt="">
+                        </a>
+                        <span>华北</span>
+                    </li>
+                    <li data-region="center">
+                        <a href="#">
+                            <img src="static/picture/mainm-7.png" alt=""> <img src="static/picture/mainm-7h.png" alt="">
+                        </a>
+                        <span>华中</span>
+                    </li>
+                    
+                    <li>
+                        <a href="#">
+                            <img src="static/picture/mainm-8.png" alt=""> <img src="static/picture/mainm-8h.png" alt="">
+                        </a>
+                        <span>西南</span>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="static/picture/mainm-9.png" alt=""> <img src="static/picture/mainm-9h.png" alt="">
+                        </a>
+                        <span>西北</span>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="static/picture/mainm-10.png" alt=""> <img src="static/picture/mainm-10h.png" alt="">
+                        </a>
+                        <span>东北</span>
+                    </li>
+                    
+                </ul>
+            </div>
+            <div id="tooltip" class="tooltip"></div> <!-- 提示框 -->
+            <div class="main_r">
+                <div class="item mainr1">
+                    <div class="title">
+                        <h2>车型价格分布</h2>
+                        <div class="button-container">
+                        <p><span class="span_c qiye_sm" id="qiyeBtn" onclick="line3('qiye')">价格分布</span><span class="nongchan_sm"
+                            id="nongchanBtn" onclick="line3('nongchan')">燃油类型</span></p>
+                        </div>
+                    </div>
+                    <div class="con">
+                        <div class="con_f line3" >
+                            <div class="pie-chart" id="pieChart1" style="flex: 1; height: 100%;display: block;"></div>
+                            <div class="pie-chart" id="pieChart2" style="flex: 1; height: 100%;display: none;"></div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="item mainr2">
+                    <div class="title">
+                        <h2>价位需求趋势</h2>
+                        
+                    </div>
+                    <div class="con">
+                      
+                        <div class="con_f line4" id="barchart" ></div>
+                    </div>
+                </div>
+                <div class="item mainr3">
+                    <div class="title">
+                        <h2>用户流失</h2>
+                    </div>
+                    
+                        <div class="con" id="funnelChart" style="height: 100%">
+                        </div>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+    <script src="static/js/jquery-1.10.2.js"></script>
+    <script src="static/js/bootstrap-3.3.4.js"></script>
+    <script src="static/js/echarts.min.js"></script>
+    <script src="static/js/flexible.js"></script>
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/index.js"></script>
+    <script src="static/js/moment.js"></script>
+    <script src="static/js/moment.min.js"></script>
+    <script src="static/js/daterangepicker.js"></script>
+    <script src="static/js/date.js"></script>
+    <script src="static/js/echarts-wordcloud.min.js"></script>
+    <script src="static/js/echarts-map-china.js"></script>
+    <script src="static/js/scrolllazyinit.js"></script>
+
+    <script src="static/js/loader.js"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '4693176f00affa246d4e60fed6ab3d1c', //密钥
+        }
+    </script>
+    <script type="text/javascript"
+        src="static/js/dea8af9c659f4051ab482acf9fa83781.js"></script>
+</body>
+<!-- <script language="javascript">
+    $(function() {
+				/*************** 中国地图 **************/
+				//初始化echarts实例
+				const mapChart = echarts.init(document.getElementById("mapChart"));
+				(function() {
+					let data = [
+						{"name": "辽宁", "value": 77},
+						{"name": "吉林", "value": 42},
+						{"name": "黑龙江", "value": 72},
+						{"name": "四川", "value": 81},
+						{"name": "湖北", "value": 47},
+						{"name": "福建", "value": 67},
+						{"name": "深圳", "value": 82},
+						{"name": "广东", "value": 66},
+						{"name": "重庆", "value": 24},
+						{"name": "湖南", "value": 92},
+						{"name": "上海", "value": 95},
+						{"name": "江苏", "value": 91},
+						{"name": "浙江", "value": 94},
+						{"name": "安徽", "value": 64},
+						{"name": "北京", "value": 91},
+						{"name": "天津", "value": 65},
+						{"name": "山东", "value": 98},
+						{"name": "山西", "value": 83},
+						{"name": "河南", "value": 100},
+						{"name": "河北", "value": 70},
+						{"name": "内蒙古", "value": 11},
+						{"name": "江西", "value": 23},
+						{"name": "贵州", "value": 45},
+						{"name": "云南", "value": 36},
+						{"name": "西藏", "value": 9},
+						{"name": "陕西", "value": 21},
+						{"name": "甘肃", "value": 54},
+						{"name": "青海", "value": 48},
+						{"name": "宁夏", "value": 36},
+						{"name": "新疆", "value": 24},
+						{"name": "广西", "value": 68},
+						{"name": "海南", "value": 99},
+						{"name": "台湾", "value": 88}
+					];
+					
+					let opt = {
+                        tooltip: { // 鼠标悬浮时显示的提示框
+                    trigger: 'item',
+                    formatter: function(params) {
+                        if (params.data) {
+                            return params.name + ' : ' + params.value; // 显示地区名称和 value
+                        } else {
+                            return params.name;
+                        }
+                    }
+                },
+						visualMap: {
+					        show: false,
+					        orient: 'horizontal',
+					        left: 'left',
+					        top: 'top',
+					        itemWidth: 5,
+					        calculable: true,
+					        seriesIndex: [0],
+					        inRange: {
+					            color: ['#aed8fe', '#57a1fc', '#3a73b8', '#2B32B2']
+					        }
+					    },
+						geo: {
+							map: 'china',
+					        roam: false, //开启鼠标缩放和漫游
+					        zoom: 0.9, //地图缩放级别
+							selectedMode: false, //选中模式：single | multiple
+							left: 0,
+							right: 0,
+							top: 0,
+							bottom: 0,
+							layoutCenter: ['65%', '70%'], //设置后left/right/top/bottom等属性无效
+							//layoutSize: '100%', //保持地图宽高比
+					        label: {
+					            emphasis: {
+					                show: true,
+					                textStyle: {
+					                	fontSize: 10,
+					                	color: '#fff'
+					                }
+					            }
+					        }
+						},
+						series: [{
+							type: 'map',
+							geoIndex: 0,
+							data: data
+						}]
+					};
+					mapChart.setOption(opt);
+
+                    
+                    // 添加 resize 监听
+        window.onresize = function() {
+            mapChart.resize();
+        };
+
+				})();
+        $(this).addClass('active').siblings().removeClass('active')
+    })
+</script> -->
+
+
+</html>
