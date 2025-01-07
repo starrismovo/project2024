@@ -42,5 +42,5 @@
 ### 启动步骤
 1. 克隆项目到本地：
    ```bash
-   git clone https://github.com/starrismovo/project2024.git
+   git clone https://github.com/starrismovo/project_demo-24w.git
    cd project2024
